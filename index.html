@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Internal AI/AEO Stack vs Agency Services</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #e0e0e0;
+            background: #1a1a1a;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .option-section {
+            background: #2a2a2a;
+            border-radius: 15px;
+            margin-bottom: 40px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border: 2px solid #404040;
+        }
+
+        .option-header {
+            background: #1a1a1a;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 3px solid #ff6b35;
+        }
+
+        .option-header h2 {
+            font-size: 2em;
+            margin-bottom: 5px;
+        }
+
+        .service-comparison {
+            display: flex;
+            min-height: 600px;
+        }
+
+        .agency-services {
+            flex: 1;
+            background: #333333;
+            padding: 30px;
+            border-right: 3px solid #ff6b35;
+        }
+
+        .internal-service {
+            flex: 1;
+            padding: 30px;
+            background: #2a2a2a;
+        }
+
+        .service-header {
+            background: #404040;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            text-align: center;
+            border: 2px solid #ff6b35;
+        }
+
+        .service-header h3 {
+            font-size: 1.4em;
+            margin-bottom: 5px;
+        }
+
+        .service-list {
+            list-style: none;
+        }
+
+        .service-item {
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            background: #404040;
+            border-left: 4px solid #666666;
+            transition: all 0.3s ease;
+            position: relative;
+            color: #e0e0e0;
+        }
+
+        .service-item.covered {
+            background: #2a2a2a;
+            border-left-color: #ff6b35;
+            transform: translateX(5px);
+            box-shadow: 0 3px 10px rgba(255, 107, 53, 0.3);
+        }
+
+        .service-item.covered::before {
+            content: "✓";
+            position: absolute;
+            left: -15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #ff6b35;
+            color: white;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .service-item.not-covered {
+            background: #4a3d1a;
+            border-left-color: #ff6b35;
+            opacity: 0.7;
+        }
+
+        .tool-details {
+            background: #404040;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border: 2px solid #666666;
+        }
+
+        .tool-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .tool-icon {
+            width: 50px;
+            height: 50px;
+            background: #ff6b35;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+
+        .tool-title h4 {
+            font-size: 1.3em;
+            color: white;
+            margin-bottom: 5px;
+        }
+
+        .capability-list {
+            list-style: none;
+        }
+
+        .capability-item {
+            padding: 8px 0;
+            border-bottom: 1px solid #666666;
+            display: flex;
+            align-items: flex-start;
+            color: #e0e0e0;
+        }
+
+        .capability-item:last-child {
+            border-bottom: none;
+        }
+
+        .capability-item::before {
+            content: "→";
+            color: #ff6b35;
+            font-weight: bold;
+            margin-right: 10px;
+            margin-top: 2px;
+        }
+
+        .enhancement-box {
+            background: #2a2a2a;
+            border: 2px solid #ff6b35;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .enhancement-box h5 {
+            color: #ff6b35;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .cost-summary {
+            background: #1a1a1a;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: center;
+            border: 2px solid #ff6b35;
+        }
+
+        .cost-summary h4 {
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+
+        .cost-highlight {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #ff6b35;
+        }
+
+        .not-covered-section {
+            background: #4a3d1a;
+            border: 2px solid #ff6b35;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .not-covered-section h5 {
+            color: #ff6b35;
+            margin-bottom: 10px;
+        }
+
+        .tool-link {
+            color: #ff6b35;
+            text-decoration: none;
+            font-size: 0.9em;
+            margin-top: 5px;
+            display: block;
+        }
+
+        .tool-link:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .service-comparison {
+                flex-direction: column;
+            }
+            
+            .agency-services {
+                border-right: none;
+                border-bottom: 3px solid #ff6b35;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Internal AI/AEO Stack vs Agency Services</h1>
+        </div>
+
+        <!-- OPTION 1: CORE STACK -->
+        <div class="option-section">
+            <div class="option-header">
+                <h2>OPTION 1: CORE AI/AEO STACK</h2>
+            </div>
+
+            <!-- Otterly.AI Section -->
+            <div class="service-comparison">
+                <div class="agency-services">
+                    <ul class="service-list">
+                        <li class="service-item covered">Monthly AI citation tracking across all platforms</li>
+                        <li class="service-item">Schema markup maintenance and enhancement (up to 50 pages monthly)</li>
+                        <li class="service-item">FAQ schema implementation for maximum citation potential</li>
+                        <li class="service-item covered">Competitive AI positioning monitoring</li>
+                        <li class="service-item">Website optimization for AI search platforms</li>
+                        <li class="service-item">4-6 strategic blog posts monthly</li>
+                        <li class="service-item">1 comprehensive monthly guide</li>
+                        <li class="service-item">1 comparison tool or buyer's guide</li>
+                        <li class="service-item">1-2 case studies or social proof content</li>
+                        <li class="service-item">Reddit monitoring for brand mentions</li>
+                        <li class="service-item">Social-to-AI citation correlation analysis</li>
+                    </ul>
+                </div>
+                <div class="internal-service">
+                    <div class="tool-details">
+                        <div class="tool-header">
+                            <div class="tool-icon">OT</div>
+                            <div class="tool-title">
+                                <h4>Otterly.AI Standard</h4>
+                                <a href="https://otterly.ai" target="_blank" class="tool-link">→ Visit Otterly.AI</a>
+                            </div>
+                        </div>
+                        <ul class="capability-list">
+                            <li class="capability-item"><strong>Monthly AI citation tracking:</strong> Automatically tracks brand mentions and website citations on Google AI Overviews, ChatGPT, Perplexity, Google AI Mode, Gemini, and Microsoft Copilot</li>
+                            <li class="capability-item"><strong>Competitive AI positioning:</strong> Shows what percentage of conversation you're capturing (e.g., one brand captured 40% of mentions while competitor only got 15%)</li>
+                            <li class="capability-item"><strong>Share of voice analysis:</strong> Real-time competitor benchmarking across all major AI platforms</li>
+                            <li class="capability-item"><strong>Prompt research:</strong> Discovers the search prompts your audience is asking AI platforms</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="service-divider"></div>
+
+            <!-- Semrush Section -->
+            <div class="service-comparison">
+                <div class="agency-services">
+                    <ul class="service-list">
+                        <li class="service-item">Monthly AI citation tracking across all platforms</li>
+                        <li class="service-item covered">Schema markup maintenance and enhancement (up to 50 pages monthly)</li>
+                        <li class="service-item covered">FAQ schema implementation for maximum citation potential</li>
+                        <li class="service-item">Competitive AI positioning monitoring</li>
+                        <li class="service-item covered">Website optimization for AI search platforms</li>
+                        <li class="service-item">4-6 strategic blog posts monthly</li>
+                        <li class="service-item">1 comprehensive monthly guide</li>
+                        <li class="service-item">1 comparison tool or buyer's guide</li>
+                        <li class="service-item">1-2 case studies or social proof content</li>
+                        <li class="service-item">Reddit monitoring for brand mentions</li>
+                        <li class="service-item">Social-to-AI citation correlation analysis</li>
+                    </ul>
+                </div>
+                <div class="internal-service">
+                    <div class="tool-details">
+                        <div class="tool-header">
+                            <div class="tool-icon">SR</div>
+                            <div class="tool-title">
+                                <h4>Semrush Guru + AI Toolkit</h4>
+                                <a href="https://www.semrush.com" target="_blank" class="tool-link">→ Visit Semrush</a>
+                            </div>
+                        </div>
+                        <ul class="capability-list">
+                            <li class="capability-item"><strong>Schema markup maintenance:</strong> Site Audit tool identifies UX gaps and offers actionable fixes including schema optimization</li>
+                            <li class="capability-item"><strong>FAQ schema implementation:</strong> Built-in schema tools and recommendations for maximum citation potential</li>
+                            <li class="capability-item"><strong>Website optimization for AI:</strong> Implements structured data for better AI understanding through entity recognition</li>
+                            <li class="capability-item"><strong>Strategy & performance:</strong> Comprehensive data for internal team meetings and performance reviews</li>
+                            <li class="capability-item"><strong>Technical SEO foundation:</strong> All the technical groundwork needed for AI discoverability</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="service-divider"></div>
+
+            <!-- Writesonic Section -->
+            <div class="service-comparison">
+                <div class="agency-services">
+                    <ul class="service-list">
+                        <li class="service-item">Monthly AI citation tracking across all platforms</li>
+                        <li class="service-item">Schema markup maintenance and enhancement (up to 50 pages monthly)</li>
+                        <li class="service-item">FAQ schema implementation for maximum citation potential</li>
+                        <li class="service-item">Competitive AI positioning monitoring</li>
+                        <li class="service-item">Website optimization for AI search platforms</li>
+                        <li class="service-item covered">4-6 strategic blog posts monthly</li>
+                        <li class="service-item covered">1 comprehensive monthly guide</li>
+                        <li class="service-item covered">1 comparison tool or buyer's guide</li>
+                        <li class="service-item">1-2 case studies or social proof content</li>
+                        <li class="service-item">Reddit monitoring for brand mentions</li>
+                        <li class="service-item">Social-to-AI citation correlation analysis</li>
+                    </ul>
+                </div>
+                <div class="internal-service">
+                    <div class="tool-details">
+                        <div class="tool-header">
+                            <div class="tool-icon">WS</div>
+                            <div class="tool-title">
+                                <h4>Writesonic</h4>
+                                <a href="https://writesonic.com" target="_blank" class="tool-link">→ Visit Writesonic</a>
+                            </div>
+                        </div>
+                        <ul class="capability-list">
+                            <li class="capability-item"><strong>4-6 strategic blog posts:</strong> Creates content that ranks on Google AND gets cited by AI with fact-checking and optimization</li>
+                            <li class="capability-item"><strong>Comprehensive guides:</strong> AI-powered long-form content creation optimized for AI citation</li>
+                            <li class="capability-item"><strong>Comparison tools:</strong> Template-based content generation for buyer's guides and comparison tools</li>
+                            <li class="capability-item"><strong>AI optimization:</strong> Content specifically designed for both traditional and AI search performance</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="service-divider"></div>
+
+            <!-- Option 1 Summary -->
+            <div class="service-comparison">
+                <div class="agency-services">
+                    <div class="service-header">
+                        <h3>Services NOT Covered in Option 1</h3>
+                    </div>
+                    <ul class="service-list">
+                        <li class="service-item not-covered">1-2 case studies or social proof content</li>
+                        <li class="service-item not-covered">Reddit monitoring for brand mentions</li>
+                        <li class="service-item not-covered">Social-to-AI citation correlation analysis</li>
+                    </ul>
+                    <div class="not-covered-section">
+                        <h5>Limited Coverage:</h5>
+                        <p>These services require manual implementation or are only partially covered through basic social listening features in Semrush.</p>
+                    </div>
+                </div>
+                <div class="internal-service">
+                    <div class="cost-summary">
+                        <h4>Option 1 Total Investment</h4>
+                        <div class="cost-highlight">$737/month</div>
+                        <div class="cost-highlight">$8,844/year</div>
+                        <div style="margin-top: 15px; text-align: left;">
+                            <strong>Itemized Costs:</strong><br>
+                            • Otterly.AI Standard: $189/month<br>
+                            • Semrush Guru + AI Toolkit: $698/month (2 domains)<br>
+                            • Writesonic: $199/month
+                        </div>
+                        <div style="margin-top: 10px; font-size: 0.9em; color: #ccc;">
+                            <strong>Note:</strong> Semrush AI Toolkit is $99 per domain. Your company has 2 domains, requiring 2 licenses.
+                        </div>
+                        <p style="margin-top: 15px;">Covers 8 out of 11 agency services<br>
+                        85-95% cost savings vs. agency</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- OPTION 2: ENHANCED STACK -->
+        <div class="option-section">
+            <div class="option-header">
+                <h2>OPTION 2: ENHANCED STACK WITH WEB SCRAPING</h2>
+            </div>
+
+            <!-- All Services Covered -->
+            <div class="service-comparison">
+                <div class="agency-services">
+                    <div class="service-header">
+                        <h3>ALL Agency Services Covered</h3>
+                        <p>Complete coverage with enhanced capabilities</p>
+                    </div>
+                    <ul class="service-list">
+                        <li class="service-item covered">Monthly AI citation tracking across all platforms</li>
+                        <li class="service-item covered">Schema markup maintenance and enhancement (up to 50 pages monthly)</li>
+                        <li class="service-item covered">FAQ schema implementation for maximum citation potential</li>
+                        <li class="service-item covered">Competitive AI positioning monitoring</li>
+                        <li class="service-item covered">Website optimization for AI search platforms</li>
+                        <li class="service-item covered">4-6 strategic blog posts monthly</li>
+                        <li class="service-item covered">1 comprehensive monthly guide</li>
+                        <li class="service-item covered">1 comparison tool or buyer's guide</li>
+                        <li class="service-item covered">1-2 case studies or social proof content</li>
+                        <li class="service-item covered">Reddit monitoring for brand mentions</li>
+                        <li class="service-item covered">Social-to-AI citation correlation analysis</li>
+                    </ul>
+                </div>
+                <div class="internal-service">
+                    <div class="tool-details">
+                        <div class="tool-header">
+                            <div class="tool-icon">BA</div>
+                            <div class="tool-title">
+                                <h4>Browse AI Professional</h4>
+                                <a href="https://www.browse.ai" target="_blank" class="tool-link">→ Visit Browse AI</a>
+                            </div>
+                        </div>
+                        <ul class="capability-list">
+                            <li class="capability-item"><strong>Reddit monitoring:</strong> Extract data from social media posts and comments for comprehensive brand monitoring</li>
+                            <li class="capability-item"><strong>Social-to-AI correlation:</strong> AI agents analyze scraped content to identify patterns and relationships</li>
+                            <li class="capability-item"><strong>Case studies & social proof:</strong> User review mining and testimonial collection at scale</li>
+                            <li class="capability-item"><strong>Community conversation monitoring:</strong> Track industry discussions across forums, Reddit, social media</li>
+                            <li class="capability-item"><strong>General web scraping:</strong> Point-and-click interface for scraping any website structure</li>
+                        </ul>
+                        
+                        <div style="background: #404040; border: 2px solid #666666; border-radius: 10px; padding: 20px; margin-top: 20px;">
+                            <h5 style="color: #ff6b35; margin-bottom: 15px;">Alternative: Apify Starter ($49/month)</h5>
+                            <a href="https://apify.com" target="_blank" class="tool-link" style="margin-bottom: 10px;">→ Visit Apify</a>
+                            <p style="color: #e0e0e0; margin-bottom: 10px;"><strong>Use Apify instead if you need:</strong></p>
+                            <ul style="list-style: none; padding: 0;">
+                                <li style="padding: 4px 0; color: #e0e0e0;">• Pre-built scrapers for specific platforms (Instagram, Facebook, LinkedIn)</li>
+                                <li style="padding: 4px 0; color: #e0e0e0;">• Better anti-detection for social media platforms</li>
+                                <li style="padding: 4px 0; color: #e0e0e0;">• More advanced rate limiting and proxy management</li>
+                                <li style="padding: 4px 0; color: #e0e0e0;">• Pay-per-use model ($30/month less base cost)</li>
+                            </ul>
+                            <p style="color: #e0e0e0; margin-top: 10px; font-size: 0.9em; font-style: italic;"><strong>Apify Compute Model:</strong> $39/month includes $39 in credits. Additional usage at $0.4 per Compute Unit. Social media scraping typically uses 0.1-0.5 CUs per 100 posts.</p>
+                            <p style="color: #e0e0e0; margin-top: 10px; font-style: italic;">Browse AI: Better for general scraping flexibility | Apify: Better for specialized social media scraping</p>
+                        </div>
+                        
+                        <div class="enhancement-box">
+                            <h5>Enhanced Capabilities Beyond Agency Services:</h5>
+                            <ul class="capability-list">
+                                <li class="capability-item">Real-time community conversation monitoring</li>
+                                <li class="capability-item">Competitor content strategy analysis</li>
+                                <li class="capability-item">User question mining at scale (up to 500,000 pages)</li>
+                                <li class="capability-item">Proprietary industry intelligence - unique insights unavailable to competitors using standard agency services</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Option 2 Summary -->
+            <div class="service-comparison">
+                <div class="agency-services">
+                </div>
+                <div class="internal-service">
+                    <div class="cost-summary">
+                        <h4>Option 2 Total Investment</h4>
+                        <div class="cost-highlight">$1,155/month (Browse AI)</div>
+                        <div class="cost-highlight">$13,860/year</div>
+                        <div style="margin-top: 10px;">
+                            <div class="cost-highlight" style="font-size: 1.2em;">$1,125/month (Apify)</div>
+                            <div class="cost-highlight" style="font-size: 1.2em;">$13,500/year</div>
+                        </div>
+                        <div style="margin-top: 15px; text-align: left;">
+                            <strong>Browse AI Option:</strong><br>
+                            • Otterly.AI Standard: $189/month<br>
+                            • Semrush Guru + AI Toolkit: $698/month (2 domains)<br>
+                            • Writesonic: $199/month<br>
+                            • Browse AI Professional: $69/month (annual)<br><br>
+                            <strong>Apify Option:</strong><br>
+                            • Otterly.AI Standard: $189/month<br>
+                            • Semrush Guru + AI Toolkit: $698/month (2 domains)<br>
+                            • Writesonic: $199/month<br>
+                            • Apify Starter: $39/month + compute costs*
+                        </div>
+                        <div style="margin-top: 15px; font-size: 0.9em; color: #ccc;">
+                            <strong>*Apify Compute Costs:</strong> $39/month includes $39 in platform credits. Additional usage charged at $0.4 per Compute Unit (CU). Typical social media scraping: 0.1-0.5 CUs per 100 posts. Estimate $10-30/month additional for moderate usage.
+                        </div>
+                        <p style="margin-top: 15px;">Covers ALL 11 agency services<br>
+                        PLUS unique competitive advantages<br>
+                        90-96% cost savings vs. agency</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
